@@ -1,0 +1,9 @@
+{
+    "existing_cluster_id": "0421-172042-scats73",
+    "spark_python_task": {
+        "python_file": "dbfs:/user/bclipp770@yandex.com/MLOps_search_python/__main__.py",
+    },
+    "email_notifications": {},
+    "name": "MLOps_search_python",
+    "max_concurrent_runs": 1
+}
