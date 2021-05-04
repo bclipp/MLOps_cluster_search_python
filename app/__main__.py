@@ -50,27 +50,6 @@ def main():
     print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
     print("building our model")
 
-    # mlflow.sklearn.autolog(log_model_signatures=True, loggit@github.com:bclipp/MLOps_infra.git_models=True)
-    # param_grid = {
-    #    'bootstrap': [True],
-    #    'max_depth': [80, 90, 100, 110],
-    #    'max_features': [2, 3],
-    #    'min_samples_leaf': [3, 4, 5],
-    #    'min_samples_split': [8, 10, 12],
-    #    'n_estimators': [100, 200, 300, 1000]
-    # }
-    # Create a based model
-    # rf = RandomForestRegressor()
-    # Instantiate the grid search model
-    # grid_search = GridSearchCV(estimator=rf,
-    #                           param_grid=param_grid,
-    #                           cv=3,
-    #                           n_jobs=-1,
-    #                           verbose=2)
-
-    # grid_search.fit(X_train, y_train)
-    # grid_search.best_params_
-    # best_grid = grid_search.best_estimator_
     def objective(hypers):
         regr = RandomForestRegressor(max_depth=hypers["max_depth"],
                                      max_features=hypers["max_features"],
