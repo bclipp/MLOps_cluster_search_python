@@ -18,7 +18,7 @@ def main():
         .builder \
         .appName("MLops_search_python") \
         .getOrCreate()
-    uid = sys.argv[1]
+    uid = "testing123" if sys.argv[1] == "" else sys.argv[1]
     spark.conf.set("spark.sql.execution.arrow.enabled", True)
     print(f"reading delta table: dbfs:/datalake/stocks_{uid}/data")
     try:
@@ -41,9 +41,8 @@ def main():
     y = y[:-forecast_out]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     print("creating MLflow project")
-    experiment_id = mlflow.create_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
-    experiment = mlflow.get_experiment(experiment_id)
-    print("Name: {}".format(experiment.name))
+    mlflow.set_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/cluster_{uid}")
+    experiment = mlflow.get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
     print("Experiment_id: {}".format(experiment.experiment_id))
     print("Artifact Location: {}".format(experiment.artifact_location))
     print("Tags: {}".format(experiment.tags))
