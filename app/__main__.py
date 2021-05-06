@@ -11,6 +11,7 @@ from sklearn.model_selection import GridSearchCV
 from hyperopt import SparkTrials
 from hyperopt import fmin, tpe, hp, SparkTrials, STATUS_OK, Trials
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
+from sklearn.model_selection import cross_val_score
 
 
 def main():
@@ -43,10 +44,10 @@ def main():
     print("creating MLflow project")
     mlflow.set_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/cluster_{uid}")
     experiment = mlflow.get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
-    print("Experiment_id: {}".format(experiment.experiment_id))
-    print("Artifact Location: {}".format(experiment.artifact_location))
-    print("Tags: {}".format(experiment.tags))
-    print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
+    # print("Experiment_id: {}".format(experiment.experiment_id))
+    #print("Artifact Location: {}".format(experiment.artifact_location))
+    #print("Tags: {}".format(experiment.tags))
+    #print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
     print("building our model")
 
     def objective(hypers):
@@ -67,13 +68,16 @@ def main():
         'n_estimators': hp.choice('n_estimators', range(100, 500))}
 
     spark_trials = SparkTrials()
+
     with mlflow.start_run():
         argmin = fmin(
             fn=objective,
             space=search_space,
-            algo=tpe.suggest,
+            algo=algo,
             max_evals=16,
             trials=spark_trials)
+
+    print("Best value found: ", argmin)
 
 
 if __name__ == "__main__":
