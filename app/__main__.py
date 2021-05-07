@@ -44,10 +44,6 @@ def main():
     print("creating MLflow project")
     mlflow.set_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/cluster_{uid}")
     experiment = mlflow.get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
-    # print("Experiment_id: {}".format(experiment.experiment_id))
-    #print("Artifact Location: {}".format(experiment.artifact_location))
-    #print("Tags: {}".format(experiment.tags))
-    #print("Lifecycle_stage: {}".format(experiment.lifecycle_stage))
     print("building our model")
 
     def objective(hypers):
