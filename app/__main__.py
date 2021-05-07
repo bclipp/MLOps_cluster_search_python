@@ -46,6 +46,7 @@ def main():
     experiment = mlflow.get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
     print("building our model")
     algo = tpe.suggest
+
     def objective(hypers):
         regr = RandomForestRegressor(max_depth=hypers["max_depth"],
                                      max_features=hypers["max_features"],
