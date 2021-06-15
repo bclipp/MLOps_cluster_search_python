@@ -1,0 +1,15 @@
+image: "python:3.7"
+always-run:
+  script: echo 'this should always run'
+
+on-pull-requests:
+  stage: test
+  script:
+    - pip install pylint
+    - pip install -r requirements.txt
+    - pylint -d C0103 --fail-under=8 app
+
+except-pull-requests:
+  script: echo 'this should not run on pull requests'
+  except:
+    - external_pull_requests
