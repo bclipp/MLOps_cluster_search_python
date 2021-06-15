@@ -1,4 +1,7 @@
-import math as math
+"""
+This is a module used for doing grid searches using python
+"""
+import math
 import sys
 import numpy as np
 from sklearn import preprocessing
@@ -7,14 +10,15 @@ from sklearn.model_selection import train_test_split
 import mlflow
 import mlflow.sklearn
 from pyspark.sql import SparkSession
-from sklearn.model_selection import GridSearchCV
-from hyperopt import SparkTrials
 from hyperopt import fmin, tpe, hp, SparkTrials, STATUS_OK, Trials
-from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 from sklearn.model_selection import cross_val_score
 
 
 def main():
+    """
+    This is the entry point for the application
+    :return:
+    """
     spark = SparkSession \
         .builder \
         .appName("MLops_search_python") \
@@ -43,7 +47,8 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     print("creating MLflow project")
     mlflow.set_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/cluster_{uid}")
-    experiment = mlflow.get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
+    experiment = mlflow\
+        .get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
     print("building our model")
     algo = tpe.suggest
 
