@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 import mlflow
 import mlflow.sklearn
 from pyspark.sql import SparkSession
-from hyperopt import fmin, tpe, hp, SparkTrials, STATUS_OK, Trials
+from hyperopt import fmin, tpe, hp, SparkTrials, STATUS_OK
 from sklearn.model_selection import cross_val_score
 
 
@@ -40,15 +40,12 @@ def main():
     df_2['label'] = df_2[forecast_col].shift(-forecast_out)
     X = np.array(df_2.drop(['label'], 1))
     X = preprocessing.scale(X)
-    X_lately = X[-forecast_out:]
     X = X[:-forecast_out]
     y = np.array(df_2['label'])
     y = y[:-forecast_out]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    X_train, _, y_train, _ = train_test_split(X, y, test_size=0.33, random_state=42)
     print("creating MLflow project")
     mlflow.set_experiment(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/cluster_{uid}")
-    experiment = mlflow\
-        .get_experiment_by_name(f"/Users/bclipp770@yandex.com/datalake/stocks/experiments/{uid}")
     print("building our model")
     algo = tpe.suggest
 
