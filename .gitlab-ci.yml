@@ -6,6 +6,9 @@ on-pull-requests:
   stage: test
   script:
     - pip install pylint
+    - pip install pipenv
+    - pipenv install
+    - pip freeze > requirements.txt
     - pip install -r requirements.txt
     - pylint -d C0103 --fail-under=8 app
 
