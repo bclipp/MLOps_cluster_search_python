@@ -1,4 +1,14 @@
 image: "python:3.7"
+
+variables:
+  WORKON_HOME: .pipenv/venvs
+  PIP_CACHE_DIR: .pipenv/pipcache
+
+cache:
+  key: pipenv
+  paths:
+    - .pipenv
+
 always-run:
   script: echo 'this should always run'
 
