@@ -1,5 +1,9 @@
 image: "python:3.7"
 
+stages:
+    - test
+    - deploy
+
 variables:
   WORKON_HOME: .pipenv/venvs
   PIP_CACHE_DIR: .pipenv/pipcache
@@ -8,9 +12,6 @@ cache:
   key: pipenv
   paths:
     - .pipenv
-
-always-run:
-  script: echo 'this should always run'
 
 on-pull-requests:
   stage: test
@@ -21,9 +22,27 @@ on-pull-requests:
     - pipenv run pip freeze > requirements.txt
     - pipenv run pip freeze
     - pip install -r requirements.txt
-    - pylint -d C0103 -d E0401 --fail-under=8 app
+    - pylint --fail-under=8 -d E0401 -d C0103 app
 
 except-pull-requests:
   script: echo 'this should not run on pull requests'
   except:
     - external_pull_requests
+publish:
+  only:
+    - main
+  stage: deploy
+  image: 
+    name: ubuntu
+    entrypoint: [""]
+  services:
+    - docker:dind
+  before_script:
+    - apt-get update
+    - apt-get install -y  python3 python3-pip
+    - pip3 install databricks-cli --upgrade
+    #- echo '{}' > ~/.databricks-connect
+  script:
+    - databricks fs rm  -r dbfs:/datalake/code/cluster_search
+    - databricks fs mkdirs dbfs:/datalake/code/cluster_search
+    - databricks fs cp app dbfs:/datalake/code/cluster_search -r
