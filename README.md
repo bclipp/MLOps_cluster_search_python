@@ -1,1 +1,1 @@
-# MLOps_cluster_search_python
+This app is used for searching for an ideal hyperparameter combination
